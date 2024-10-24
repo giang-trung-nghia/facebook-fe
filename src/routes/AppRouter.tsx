@@ -1,6 +1,15 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import SignIn from "../pages/SignIn";
+import SignUp from "../pages/SignUp";
+import { SignInRoute, SignUpRoute } from "./auth.route";
+import { DashboardRoute } from "./dashboard.route";
+import { Dashboard } from "../pages/Dashboard";
 // import Home from "@/pages/Home";
 
 const AppRouter: React.FC = () => {
@@ -8,7 +17,11 @@ const AppRouter: React.FC = () => {
     <Router>
       <Routes>
         {/* <Route path="/" element={<Home />} /> */}
-        <Route path="/signin" element={<SignIn />} />
+        <Route path="/" element={<Navigate to={SignInRoute.path} />} />
+        <Route path={SignInRoute.path} element={<SignIn />} />
+        <Route path={SignUpRoute.path} element={<SignUp />} />
+        <Route path={DashboardRoute.path} element={<Dashboard />} />
+        <Route path={"*"} element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );
