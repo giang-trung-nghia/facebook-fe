@@ -8,21 +8,25 @@ import {
   Divider,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { SignUpRoute } from "../routes/auth.route";
-import { postSignIn } from "../services/api/auth.api";
-import IconGoogle from "../assets/icons/google.png";
-import { API_BASE_URL, BE_BASE_DOMAIN } from "../utils/constants/common.constant";
+import { SignUpRoute } from "../../routes/auth.route";
+import { postSignIn } from "../../services/api/auth.api";
+import IconGoogle from "../../assets/icons/google.png";
+import {
+  API_BASE_URL,
+  BE_BASE_DOMAIN,
+} from "../../utils/constants/common.constant";
+import { useDispatch } from "react-redux";
+import { setAuth } from "../../store/slices/auth/authSlice";
 
 const SignIn: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleMessage = (event: any) => {
-      console.log(event);
-      
       if (event.origin === BE_BASE_DOMAIN) {
         const { token } = event.data;
         if (token) {
@@ -30,18 +34,20 @@ const SignIn: React.FC = () => {
         }
       }
     };
-    console.log("add window event message");
     window.addEventListener("message", handleMessage);
 
     return () => {
-      console.log("remove window event message");
       window.removeEventListener("message", handleMessage);
     };
   }, [navigate]);
 
   const onClickSignIn = async () => {
     const res = await postSignIn(email, password);
-    console.log(res);
+    if (res) {
+      console.log(res)
+      dispatch(setAuth(res));
+      navigate("/dashboard");
+    }
   };
 
   const onClickSignUp = () => {

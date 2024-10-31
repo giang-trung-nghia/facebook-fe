@@ -5,8 +5,8 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import SignIn from "../pages/SignIn";
-import SignUp from "../pages/SignUp";
+import SignIn from "../pages/auth/SignIn";
+import SignUp from "../pages/auth/SignUp";
 import { SignInRoute, SignUpRoute } from "./auth.route";
 import { DashboardRoute } from "./dashboard.route";
 import { Dashboard } from "../pages/Dashboard";

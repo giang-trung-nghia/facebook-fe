@@ -1,9 +1,9 @@
 import React from "react";
 import { TextField, Button, Typography, Container, Box } from "@mui/material";
-import IconGoogle from "../assets/icons/google.png";
+import IconGoogle from "../../assets/icons/google.png";
 import { useNavigate } from "react-router-dom";
-import { SignInRoute } from "../routes/auth.route";
-import { API_BASE_URL } from "../utils/constants/common.constant";
+import { SignInRoute } from "../../routes/auth.route";
+import { API_BASE_URL } from "../../utils/constants/common.constant";
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate();

@@ -1,8 +1,10 @@
+import Loading from "./components/commons/Loading";
 import AppRouter from "./routes/AppRouter";
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div>
+      <Loading />
       <AppRouter />
     </div>
   );
