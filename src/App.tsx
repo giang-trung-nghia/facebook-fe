@@ -1,11 +1,14 @@
 import Loading from "./components/commons/Loading";
+import { SnackbarProvider } from "./components/commons/SnackbarContent";
 import AppRouter from "./routes/AppRouter";
 
 function App() {
   return (
     <div>
-      <Loading />
-      <AppRouter />
+      <SnackbarProvider>
+        <Loading />
+        <AppRouter />
+      </SnackbarProvider>
     </div>
   );
 }

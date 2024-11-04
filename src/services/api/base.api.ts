@@ -2,6 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { API_BASE_URL } from "../../utils/constants/common.constant";
 import { store } from "../../store";
 import { setLoading } from "../../store/slices/loadingSlice";
+import { snackbarRef } from "../../components/commons/SnackbarContent";
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
@@ -9,6 +10,15 @@ export const api = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+const handleError = (msg: string) => {
+  if (snackbarRef) {
+    snackbarRef(
+      "An error occurred while processing the request: " + msg,
+      "error"
+    );
+  }
+};
 
 export async function postApi<TRequest, TResponse>(
   path: string,
@@ -20,9 +30,9 @@ export async function postApi<TRequest, TResponse>(
     dispatch(setLoading(true));
     const response = await api.post<TResponse>(path, payload, config);
     return response.data;
-  } catch (e) {
-    console.error(e);
-    return e as TResponse;
+  } catch (e: any) {
+    handleError(e.message);
+    throw new Error(e);
   } finally {
     dispatch(setLoading(false));
   }
@@ -38,9 +48,9 @@ export async function patchApi<TRequest, TResponse>(
     dispatch(setLoading(true));
     const response = await api.patch<TResponse>(path, payload, config);
     return response.data;
-  } catch (e) {
-    console.error(e);
-    return e as TResponse;
+  } catch (e: any) {
+    handleError(e.message);
+    throw new Error(e);
   } finally {
     dispatch(setLoading(false));
   }
@@ -56,9 +66,9 @@ export async function putApi<TRequest, TResponse>(
     dispatch(setLoading(true));
     const response = await api.put<TResponse>(path, payload, config);
     return response.data;
-  } catch (e) {
-    console.error(e);
-    return e as TResponse;
+  } catch (e: any) {
+    handleError(e.message);
+    throw new Error(e);
   } finally {
     dispatch(setLoading(false));
   }
@@ -70,9 +80,9 @@ export async function deleteApi<TResponse>(path: string): Promise<TResponse> {
     dispatch(setLoading(true));
     const response = await api.delete<TResponse>(path);
     return response.data;
-  } catch (e) {
-    console.error(e);
-    return e as TResponse;
+  } catch (e: any) {
+    handleError(e.message);
+    throw new Error(e);
   } finally {
     dispatch(setLoading(false));
   }
@@ -92,9 +102,9 @@ export async function getApi<TResponse>(
       return response.data;
     }
     return response.data;
-  } catch (e) {
-    console.error(e);
-    return e as TResponse;
+  } catch (e: any) {
+    handleError(e.message);
+    throw new Error(e);
   } finally {
     if (!disabledLoading) {
       dispatch(setLoading(false));

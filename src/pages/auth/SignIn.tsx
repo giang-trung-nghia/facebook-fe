@@ -42,12 +42,10 @@ const SignIn: React.FC = () => {
   }, [navigate]);
 
   const onClickSignIn = async () => {
-    const res = await postSignIn(email, password);
-    if (res) {
-      console.log(res)
+    await postSignIn(email, password).then((res) => {
       dispatch(setAuth(res));
       navigate("/dashboard");
-    }
+    });
   };
 
   const onClickSignUp = () => {
