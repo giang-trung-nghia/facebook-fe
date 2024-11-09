@@ -39,7 +39,7 @@ export async function postApi<TRequest, TResponse>(
     const response = await api.post<TResponse>(path, payload, config);
     return response.data;
   } catch (e: any) {
-    handleError(e.response.data);
+    handleError(e.response ? e.response.data : e.message);
     throw new Error(e);
   } finally {
     dispatch(setLoading(false));
@@ -57,7 +57,7 @@ export async function patchApi<TRequest, TResponse>(
     const response = await api.patch<TResponse>(path, payload, config);
     return response.data;
   } catch (e: any) {
-    handleError(e.message);
+    handleError(e.response ? e.response.data : e.message);
     throw new Error(e);
   } finally {
     dispatch(setLoading(false));
@@ -75,7 +75,7 @@ export async function putApi<TRequest, TResponse>(
     const response = await api.put<TResponse>(path, payload, config);
     return response.data;
   } catch (e: any) {
-    handleError(e.message);
+    handleError(e.response ? e.response.data : e.message);
     throw new Error(e);
   } finally {
     dispatch(setLoading(false));
@@ -89,7 +89,7 @@ export async function deleteApi<TResponse>(path: string): Promise<TResponse> {
     const response = await api.delete<TResponse>(path);
     return response.data;
   } catch (e: any) {
-    handleError(e.message);
+    handleError(e.response ? e.response.data : e.message);
     throw new Error(e);
   } finally {
     dispatch(setLoading(false));
@@ -111,7 +111,7 @@ export async function getApi<TResponse>(
     }
     return response.data;
   } catch (e: any) {
-    handleError(e.message);
+    handleError(e.response ? e.response.data : e.message);
     throw new Error(e);
   } finally {
     if (!disabledLoading) {
