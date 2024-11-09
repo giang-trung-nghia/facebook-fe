@@ -43,6 +43,8 @@ const SignIn: React.FC = () => {
 
   const onClickSignIn = async () => {
     await postSignIn(email, password).then((res) => {
+      localStorage.setItem("accessToken", res.accessToken);
+      localStorage.setItem("refreshToken", res.refreshToken);
       dispatch(setAuth(res));
       navigate("/dashboard");
     });
@@ -64,12 +66,9 @@ const SignIn: React.FC = () => {
     const checkPopup = setInterval(() => {
       if (!popup || popup.closed) {
         clearInterval(checkPopup);
-        // Popup đóng lại, kiểm tra nếu đăng nhập thành công
-        // Lấy JWT từ localStorage hoặc gọi API để lấy token
         const token = localStorage.getItem("jwtToken");
         if (token) {
           console.log("Login successful:", token);
-          // Xử lý đăng nhập thành công
         } else {
           console.log("Login failed or canceled");
         }
@@ -98,7 +97,7 @@ const SignIn: React.FC = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           variant="outlined"
-          label="Email or Phone Number"
+          label="Email"
           fullWidth
           margin="normal"
         />

@@ -11,12 +11,20 @@ export const api = axios.create({
   },
 });
 
+api.interceptors.request.use(
+  (config) => {
+    const jwtToken = localStorage.getItem("accessToken");
+    config.headers["Authorization"] = jwtToken;
+    return config;
+  },
+  (error) => {
+    handleError(error);
+  }
+);
+
 const handleError = (msg: string) => {
   if (snackbarRef) {
-    snackbarRef(
-      "An error occurred while processing the request: " + msg,
-      "error"
-    );
+    snackbarRef(msg, "error");
   }
 };
 
@@ -31,7 +39,7 @@ export async function postApi<TRequest, TResponse>(
     const response = await api.post<TResponse>(path, payload, config);
     return response.data;
   } catch (e: any) {
-    handleError(e.message);
+    handleError(e.response.data);
     throw new Error(e);
   } finally {
     dispatch(setLoading(false));

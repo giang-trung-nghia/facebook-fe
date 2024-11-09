@@ -1,0 +1,82 @@
+:root {
+    --background: #000000;
+    --black: #000000;
+    --white: #FFFFFF;
+    --primary: #EA5284;
+    --secondary: rgba(255, 255, 255, 0.12);
+    --color_btn: rgba(255, 255, 255, 0.87);
+    --shadow: rgba(234, 82, 132, 0.4);
+    --border: #FFFFFF;
+
+    --text-primary: #000000;
+    --text-color: #000000;
+    --text-description: rgba(0, 0, 0, 0.6);
+    --text-title: #FFFFFF;
+    --text-processing: #FFFFFF;
+    --text-download-title: rgba(255, 255, 255, 0.6);
+
+    --layout-btn: rgba(234, 82, 132, 0.16);
+    --btn-disabled: hsla(340, 78%, 62%, 0.6);
+
+    --primary-darker:rgb(234, 82, 132, 0.8);
+    --black-darker: rgb(255, 255, 255, 0.2);
+
+    --font-primary: "Lato";
+    --font-secondary: "Lato";
+    --primaryTagline: #EA5284;
+}
+
+[data-theme="light"] {
+    --background: #F1ECE2;
+    --black: #000000;
+    --white: #FFFFFF;
+    --primary: #C75454;
+    --secondary: rgba(75, 85, 81, 0.4);
+    --color_btn: rgba(255, 255, 255, 0.87);
+    --shadow: rgba(255, 255, 255, 0.4);
+    --border: #C75454;
+
+    --text-primary: #C75454;
+    --text-color: #C75454;
+    --text-description: rgba(75, 85, 81, 0.6);
+    --text-title: #4B5551;
+    --text-processing: #4B5551;
+    --text-download-title: rgba(75, 85, 81, 0.6);
+
+    --layout-btn: rgba(199, 84, 84, 0.16);
+    --btn-disabled: hsla(0, 51%, 55%, 0.6);
+
+    --primary-darker: rgba(199, 84, 84, 0.8);
+    --black-darker: rgb(0, 0, 0, 0.8);
+
+    --font-primary: "Gasolyn";
+    --font-secondary: "Gasolyn";
+}
+
+[data-theme="dark"] {
+    --background: #39719F;
+    --black: #000000;
+    --white: #FFFFFF;
+    --primary: #312E28;
+    --secondary: rgba(255, 255, 255, 0.4);
+    --color_btn: rgba(255, 255, 255, 0.87);
+    --shadow: rgba(255, 255, 255, 0.4);
+    --border: #312E28;
+
+    --text-primary: #312E28;
+    --text-color: #312E28;
+    --text-description: rgba(75, 85, 81, 0.6);
+    --text-title: #fff;
+    --text-processing: #fff;
+    --text-download-title: rgba(75, 85, 81, 0.6);
+
+    --layout-btn: rgba(77,110,57, 0.16);
+    --btn-disabled: rgba(49,46,40,0.5);
+
+    --primary-darker: rgba(49,46,40,0.85);
+    --black-darker: rgb(0, 0, 0, 0.8);
+
+    --font-primary: "LouisCafe";
+    --font-secondary: "LouisCafe";
+    --primaryTagline: #fff;
+}

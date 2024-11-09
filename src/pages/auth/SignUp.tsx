@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { TextField, Button, Typography, Container, Box } from "@mui/material";
 import IconGoogle from "../../assets/icons/google.png";
 import { useNavigate } from "react-router-dom";
 import { SignInRoute } from "../../routes/auth.route";
 import { API_BASE_URL } from "../../utils/constants/common.constant";
+import { postSignUp } from "../../services/api/auth.api";
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+
+  const onClickSignUp = () => {
+    postSignUp({ name, email, password }).then((res) => {
+      onClickSignIn();
+    });
+  };
 
   const onClickSignIn = () => {
     navigate(SignInRoute.path);
@@ -14,7 +24,7 @@ const SignUp: React.FC = () => {
 
   const onClickSignInGoogle = () => {
     window.location.href = `${API_BASE_URL}/auth/login-google`;
-  }
+  };
 
   return (
     <Container component="main" maxWidth="xs" sx={{ pt: "3rem" }}>
@@ -32,26 +42,37 @@ const SignUp: React.FC = () => {
         <Typography variant="h5" component="h1" className="text-center mb-4">
           Sign Up
         </Typography>
-
         <TextField
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           variant="outlined"
-          label="Email or Phone Number"
+          label="Name"
           fullWidth
           margin="normal"
         />
         <TextField
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          variant="outlined"
+          label="Email"
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           variant="outlined"
           label="Password"
           type="password"
           fullWidth
           margin="normal"
         />
-
         <Button
           variant="contained"
           color="primary"
           fullWidth
           sx={{ mt: "1rem" }}
+          onClick={onClickSignUp}
         >
           Sign Up
         </Button>
