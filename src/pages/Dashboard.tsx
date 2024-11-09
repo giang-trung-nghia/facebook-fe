@@ -1,6 +1,6 @@
 import { Box, Button } from "@mui/material";
 import { useSelector } from "react-redux";
-import { selectUser } from "../store/slices/auth/authSlice";
+import { selectAuth, selectUser } from "../store/slices/auth/authSlice";
 import { useSnackbar } from "../components/commons/SnackbarContent";
 import { useEffect } from "react";
 import { getUser } from "../services/api/user.api";
@@ -8,12 +8,13 @@ import { Header } from "../layout/Header";
 
 export const Dashboard = () => {
   const user = useSelector(selectUser);
+  const authState = useSelector(selectAuth);
   const showSnackbar = useSnackbar();
 
   useEffect(() => {
     (async () => {
       if (user) {
-        console.log(user);
+        console.log(authState.accessToken);
 
         await getUser(user.id);
       }

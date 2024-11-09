@@ -17,6 +17,9 @@ import {
 } from "../../utils/constants/common.constant";
 import { useDispatch } from "react-redux";
 import { setAuth } from "../../store/slices/auth/authSlice";
+import { jwtDecode } from "jwt-decode";
+import { AuthState } from "../../store/slices/auth/types";
+import { IJwtPayload } from "../../models/auth/jwtPayload.mode";
 
 const SignIn: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -45,8 +48,21 @@ const SignIn: React.FC = () => {
     await postSignIn(email, password).then((res) => {
       localStorage.setItem("accessToken", res.accessToken);
       localStorage.setItem("refreshToken", res.refreshToken);
-      dispatch(setAuth(res));
-      navigate("/dashboard");
+      const payload: IJwtPayload = jwtDecode(res.accessToken);
+      if (payload.id) {
+        const auth: AuthState = {
+          accessToken: res.accessToken,
+          refreshToken: res.refreshToken,
+          isLogin: true,
+          user: {
+            id: payload.id,
+          },
+        };
+        dispatch(setAuth(auth));
+        navigate("/dashboard");
+      } else {
+        console.log("can't get user id after login");
+      }
     });
   };
 

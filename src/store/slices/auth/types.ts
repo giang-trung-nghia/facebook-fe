@@ -5,7 +5,6 @@ export const LOGOUT = "LOGOUT";
 
 export interface AuthState {
   user: User | null;
-  isLoading: boolean;
   isLogin: boolean;
   accessToken: string;
   refreshToken: string;
@@ -13,9 +12,10 @@ export interface AuthState {
 
 export interface User {
   id: string;
-  name: string;
-  email: string;
-  avatar: string;
+  name?: string;
+  email?: string;
+  profilePicture?: string;
+  dob?: string;
 }
 
 interface LoginRequest {
