@@ -11,6 +11,10 @@ export const postSignIn = async (
   });
 };
 
-export const postSignUp = async (body: any) => {
+export const signUp = async (body: any) => {
   return await postApi(`auth/sign-up`, body);
 };
+
+export const logOut = async (refreshToken: string) => {
+  return await postApi(`auth/sign-out`, refreshToken)
+}

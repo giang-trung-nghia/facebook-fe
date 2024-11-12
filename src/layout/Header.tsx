@@ -24,8 +24,12 @@ import WallpaperIcon from "@mui/icons-material/Wallpaper";
 import SettingsIcon from "@mui/icons-material/Settings";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { logOut } from "../services/api/auth.api";
+import { useNavigate } from "react-router";
+import { SignInRoute } from "../routes/auth.route";
 
 export const Header = () => {
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -34,6 +38,18 @@ export const Header = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = async () => {
+    const refreshToken = localStorage.getItem("refreshToken");
+    if (refreshToken) {
+      await logOut(refreshToken).then((res) => {
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("accessToken");
+        navigate(SignInRoute.path);
+        handleClose();
+      });
+    }
   };
 
   return (
@@ -147,7 +163,7 @@ export const Header = () => {
               </ListItemIcon>
               <ListItemText primary="Help" />
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick={handleLogout}>
               <ListItemIcon>
                 <LogoutIcon fontSize="small" />
               </ListItemIcon>

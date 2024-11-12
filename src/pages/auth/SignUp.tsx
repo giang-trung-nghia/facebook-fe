@@ -4,7 +4,7 @@ import IconGoogle from "../../assets/icons/google.png";
 import { useNavigate } from "react-router-dom";
 import { SignInRoute } from "../../routes/auth.route";
 import { API_BASE_URL } from "../../utils/constants/common.constant";
-import { postSignUp } from "../../services/api/auth.api";
+import { signUp } from "../../services/api/auth.api";
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ const SignUp: React.FC = () => {
   const [name, setName] = useState("");
 
   const onClickSignUp = () => {
-    postSignUp({ name, email, password }).then((res) => {
+    signUp({ name, email, password }).then((res) => {
       onClickSignIn();
     });
   };
