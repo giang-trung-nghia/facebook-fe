@@ -14,15 +14,26 @@ export const Dashboard = () => {
   useEffect(() => {
     (async () => {
       if (user) {
-        console.log(authState.accessToken);
-
         await getUser(user.id);
       }
     })();
   }, []);
 
   const handleClick = () => {
-    showSnackbar("This is a message", "info");
+    if(user) {
+      getUser(user.id).then((res) => {
+        showSnackbar("This is a message from: " + res.name, "info");
+      });
+      getUser(user.id).then((res) => {
+        showSnackbar("This is a message from: " + res.name, "info");
+      });
+      getUser('7601e672-f450-49bc-402b-08dd00936131').then((res) => {
+        showSnackbar("This is a message from: " + res.name, "info");
+      });
+      getUser('7601e672-f450-49bc-402b-08dd00936132').then((res) => {
+        showSnackbar("This is a message from: " + res.name, "info");
+      });
+    }
   };
   return (
     <Box>
