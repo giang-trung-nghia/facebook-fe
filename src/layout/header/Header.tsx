@@ -9,9 +9,9 @@ import {
   MenuItem,
   Paper,
 } from "@mui/material";
-import FacebookIcon from "../assets/icons/facebook.png";
-import UserIcon from "../assets/icons/user.png";
-import { FbIcon } from "../components/commons/FbIcon";
+import FacebookIcon from "../../assets/icons/facebook.png";
+import UserIcon from "../../assets/icons/user.png";
+import { FbIcon } from "../../components/commons/FbIcon";
 import HomeIcon from "@mui/icons-material/Home";
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
@@ -24,12 +24,18 @@ import WallpaperIcon from "@mui/icons-material/Wallpaper";
 import SettingsIcon from "@mui/icons-material/Settings";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { logOut } from "../services/api/auth.api";
+import { logOut } from "../../services/api/auth.api";
 import { useNavigate } from "react-router";
-import { SignInRoute } from "../routes/auth.route";
+import { SignInRoute } from "../../routes/auth.route";
+import { WallPaperRoute } from "../../routes/wall.route";
+import { SettingRoute } from "../../routes/setting.route";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../store/slices/auth/authSlice";
+import { DashboardRoute } from "../../routes";
 
 export const Header = () => {
   const navigate = useNavigate();
+  const user = useSelector(selectUser);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -49,6 +55,22 @@ export const Header = () => {
     handleClose();
   };
 
+  const navigateWallPaper = () => {
+    if (user) {
+      navigate(WallPaperRoute.path.replace(":id", user?.id));
+    }
+    handleClose();
+  };
+
+  const navigateSetting = () => {
+    navigate(SettingRoute.path);
+    handleClose();
+  };
+
+  const navigateDashboard = () => {
+    navigate(DashboardRoute.path);
+  };
+
   return (
     <Box
       sx={{
@@ -61,7 +83,7 @@ export const Header = () => {
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", flex: "1" }}>
-        <FbIcon src={FacebookIcon} alt="Logo" />
+        <FbIcon src={FacebookIcon} alt="Logo" onClick={navigateDashboard} />
         <Box>
           <Input size="medium"></Input>
         </Box>
@@ -118,7 +140,7 @@ export const Header = () => {
         </IconButton>
         <Avatar
           alt="Remy Sharp"
-          src={UserIcon}
+          src={user?.profilePicture ?? UserIcon}
           sx={{ width: 40, height: 40, cursor: "pointer" }}
           onClick={handleAvatarClick}
         />
@@ -142,13 +164,13 @@ export const Header = () => {
               boxShadow: "none",
             }}
           >
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick={navigateWallPaper}>
               <ListItemIcon>
                 <WallpaperIcon fontSize="small" />
               </ListItemIcon>
               <ListItemText primary="Wallpaper" />
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick={navigateSetting}>
               <ListItemIcon>
                 <SettingsIcon fontSize="small" />
               </ListItemIcon>

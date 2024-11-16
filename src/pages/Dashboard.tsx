@@ -1,19 +1,23 @@
 import { Box, Button } from "@mui/material";
 import { useSelector } from "react-redux";
-import { selectAuth, selectUser } from "../store/slices/auth/authSlice";
+import { selectUser, setUser } from "../store/slices/auth/authSlice";
 import { useEffect } from "react";
 import { getUser } from "../services/api/user.api";
-import { Header } from "../layout/Header";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
 
-export const Dashboard = () => {
+export const Dashboard: React.FC = () => {
   const user = useSelector(selectUser);
-  const authState = useSelector(selectAuth);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
       if (user) {
-        await getUser(user.id);
+        await getUser(user.id).then((res) => {
+          console.log(res);
+
+          dispatch(setUser(res));
+        });
       }
     })();
   }, []);
@@ -27,8 +31,6 @@ export const Dashboard = () => {
   };
   return (
     <Box>
-      <Header />
-
       <Button variant="contained" onClick={handleClick}>
         Show Snackbar
       </Button>

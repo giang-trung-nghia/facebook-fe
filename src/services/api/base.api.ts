@@ -94,10 +94,7 @@ api.interceptors.response.use(
     if (error.code === "ECONNABORTED") {
       toast.error("Request took too long - please try again later.");
     } else {
-      toast.error(
-        error.response?.data?.UserMessage ||
-          "An error occurred. Please try again."
-      );
+      toast.error("An error occurred. Please try again.");
     }
     dispatch(setLoading(false));
     return Promise.reject(error);

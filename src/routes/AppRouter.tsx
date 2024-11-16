@@ -7,10 +7,15 @@ import {
 } from "react-router-dom";
 import SignIn from "../pages/auth/SignIn";
 import SignUp from "../pages/auth/SignUp";
-import { SignInRoute, SignUpRoute } from "./auth.route";
-import { DashboardRoute } from "./dashboard.route";
 import { Dashboard } from "../pages/Dashboard";
 import { Bounce, ToastContainer } from "react-toastify";
+import { DashboardRoute } from "./dashboard.route";
+import { SignInRoute, SignUpRoute } from "./auth.route";
+import { WallPaperRoute } from "./wall.route";
+import { Wallpaper } from "../pages/Wallpaper";
+import { SettingRoute } from "./setting.route";
+import { Setting } from "../pages/Setting";
+import HeaderLayout from "../layout/header/HeaderLayout";
 
 const AppRouter: React.FC = () => {
   return (
@@ -20,7 +25,12 @@ const AppRouter: React.FC = () => {
           <Route path="/" element={<Navigate to={SignInRoute.path} />} />
           <Route path={SignInRoute.path} element={<SignIn />} />
           <Route path={SignUpRoute.path} element={<SignUp />} />
-          <Route path={DashboardRoute.path} element={<Dashboard />} />
+          <Route element={<HeaderLayout />}>
+            <Route path={DashboardRoute.path} element={<Dashboard />} />
+            <Route path={WallPaperRoute.path} element={<Wallpaper />} />
+            <Route path={SettingRoute.path} element={<Setting />} />
+          </Route>
+
           <Route path={"*"} element={<Navigate to="/" />} />
         </Routes>
       </Router>
