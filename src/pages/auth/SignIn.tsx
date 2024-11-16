@@ -20,6 +20,7 @@ import { setAuth } from "../../store/slices/auth/authSlice";
 import { jwtDecode } from "jwt-decode";
 import { AuthState } from "../../store/slices/auth/types";
 import { IJwtPayload } from "../../models/auth/jwtPayload.mode";
+import { toast } from "react-toastify";
 
 const SignIn: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -31,9 +32,10 @@ const SignIn: React.FC = () => {
   useEffect(() => {
     const handleMessage = (event: any) => {
       if (event.origin === BE_BASE_DOMAIN) {
-        const { token } = event.data;
-        if (token) {
-          navigate("/dashboard");
+        const { accessToken, refreshToken } = event.data;
+
+        if (accessToken && refreshToken) {
+          handleSignInSuccess(accessToken, refreshToken);
         }
       }
     };
@@ -46,24 +48,28 @@ const SignIn: React.FC = () => {
 
   const onClickSignIn = async () => {
     await postSignIn(email, password).then((res) => {
-      localStorage.setItem("accessToken", res.accessToken);
-      localStorage.setItem("refreshToken", res.refreshToken);
-      const payload: IJwtPayload = jwtDecode(res.accessToken);
-      if (payload.id) {
-        const auth: AuthState = {
-          accessToken: res.accessToken,
-          refreshToken: res.refreshToken,
-          isLogin: true,
-          user: {
-            id: payload.id,
-          },
-        };
-        dispatch(setAuth(auth));
-        navigate("/dashboard");
-      } else {
-        console.log("can't get user id after login");
-      }
+      handleSignInSuccess(res.accessToken, res.refreshToken);
     });
+  };
+
+  const handleSignInSuccess = (accessToken: string, refreshToken: string) => {
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("refreshToken", refreshToken);
+    const payload: IJwtPayload = jwtDecode(accessToken);
+    if (payload.id) {
+      const auth: AuthState = {
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+        isLogin: true,
+        user: {
+          id: payload.id,
+        },
+      };
+      dispatch(setAuth(auth));
+      navigate("/dashboard");
+    } else {
+      toast.error("can't get user id after login");
+    }
   };
 
   const onClickSignUp = () => {
@@ -82,7 +88,7 @@ const SignIn: React.FC = () => {
     const checkPopup = setInterval(() => {
       if (!popup || popup.closed) {
         clearInterval(checkPopup);
-        const token = localStorage.getItem("jwtToken");
+        const token = localStorage.getItem("accessToken");
         if (token) {
           console.log("Login successful:", token);
         } else {

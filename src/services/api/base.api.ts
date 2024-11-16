@@ -2,13 +2,13 @@ import axios, { AxiosError, AxiosRequestConfig, HttpStatusCode } from "axios";
 import { API_BASE_URL } from "../../utils/constants/common.constant";
 import { store } from "../../store";
 import { setLoading } from "../../store/slices/loadingSlice";
-import { snackbarRef } from "../../components/commons/SnackbarContent";
 import { postRefreshToken } from "./auth.api";
+import { toast } from "react-toastify";
 
 let isRefreshing = false;
 let failedRequestsQueue: Array<(token: string) => void> = [];
-const getAccessToken = () => localStorage.getItem("accessToken");
-const getRefreshToken = () => localStorage.getItem("refreshToken");
+export const getAccessToken = () => localStorage.getItem("accessToken");
+export const getRefreshToken = () => localStorage.getItem("refreshToken");
 
 const setAccessToken = (token: string) =>
   localStorage.setItem("accessToken", token);
@@ -18,6 +18,7 @@ export const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  timeout: 10000,
 });
 
 api.interceptors.request.use(
@@ -37,6 +38,7 @@ api.interceptors.response.use(
     const originalRequest = error.config as AxiosRequestConfig & {
       _retry?: boolean;
     };
+    const dispatch = store.dispatch;
 
     // If the error is 401 and it's not a retry, try refreshing the token
     if (error.response?.status === 401 && !originalRequest._retry) {
@@ -89,18 +91,25 @@ api.interceptors.response.use(
         return Promise.reject(err);
       }
     }
-
+    if (error.code === "ECONNABORTED") {
+      toast.error("Request took too long - please try again later.");
+    } else {
+      toast.error(
+        error.response?.data?.UserMessage ||
+          "An error occurred. Please try again."
+      );
+    }
+    dispatch(setLoading(false));
     return Promise.reject(error);
   }
 );
 
 const handleError = async (e: any) => {
-  if (snackbarRef) {
-    snackbarRef(
-      e.response ? (e.UserMessage ? e.response.data : e.message) : e.message,
-      "error"
-    );
-  }
+  const errorMessage = e.response
+    ? e.response.data?.UserMessage || e.message
+    : e.message;
+
+  toast.error(errorMessage);
 };
 
 export async function postApi<TRequest, TResponse>(

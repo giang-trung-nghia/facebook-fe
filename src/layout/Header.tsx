@@ -42,14 +42,11 @@ export const Header = () => {
 
   const handleLogout = async () => {
     const refreshToken = localStorage.getItem("refreshToken");
-    if (refreshToken) {
-      await logOut(refreshToken).then((res) => {
-        localStorage.removeItem("refreshToken");
-        localStorage.removeItem("accessToken");
-        navigate(SignInRoute.path);
-        handleClose();
-      });
-    }
+    logOut(refreshToken ?? "");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("accessToken");
+    navigate(SignInRoute.path);
+    handleClose();
   };
 
   return (

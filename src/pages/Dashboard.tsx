@@ -1,15 +1,14 @@
 import { Box, Button } from "@mui/material";
 import { useSelector } from "react-redux";
 import { selectAuth, selectUser } from "../store/slices/auth/authSlice";
-import { useSnackbar } from "../components/commons/SnackbarContent";
 import { useEffect } from "react";
 import { getUser } from "../services/api/user.api";
 import { Header } from "../layout/Header";
+import { toast } from "react-toastify";
 
 export const Dashboard = () => {
   const user = useSelector(selectUser);
   const authState = useSelector(selectAuth);
-  const showSnackbar = useSnackbar();
 
   useEffect(() => {
     (async () => {
@@ -20,18 +19,9 @@ export const Dashboard = () => {
   }, []);
 
   const handleClick = () => {
-    if(user) {
+    if (user) {
       getUser(user.id).then((res) => {
-        showSnackbar("This is a message from: " + res.name, "info");
-      });
-      getUser(user.id).then((res) => {
-        showSnackbar("This is a message from: " + res.name, "info");
-      });
-      getUser('7601e672-f450-49bc-402b-08dd00936131').then((res) => {
-        showSnackbar("This is a message from: " + res.name, "info");
-      });
-      getUser('7601e672-f450-49bc-402b-08dd00936132').then((res) => {
-        showSnackbar("This is a message from: " + res.name, "info");
+        toast.success("This is a message from: " + res.name);
       });
     }
   };
