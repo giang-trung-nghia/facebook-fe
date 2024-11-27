@@ -1,9 +1,10 @@
-import axios, { AxiosError, AxiosRequestConfig, HttpStatusCode } from "axios";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { API_BASE_URL } from "../../utils/constants/common.constant";
 import { store } from "../../store";
 import { setLoading } from "../../store/slices/loadingSlice";
 import { postRefreshToken } from "./auth.api";
 import { toast } from "react-toastify";
+import { SignInRoute } from "../../routes";
 
 let isRefreshing = false;
 let failedRequestsQueue: Array<(token: string) => void> = [];
@@ -18,13 +19,39 @@ export const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  timeout: 10000,
+  timeout: 30000,
 });
+
+// Utility function to check and format Date objects
+const formatDates = (data: any): any => {
+  if (!data || typeof data !== "object") return data;
+
+  if (data instanceof Date) {
+    return (
+      `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, "0")}-${String(data.getDate()).padStart(2, "0")}T` +
+      `${String(data.getHours()).padStart(2, "0")}:${String(data.getMinutes()).padStart(2, "0")}:${String(data.getSeconds()).padStart(2, "0")}.` +
+      `${String(data.getMilliseconds()).padStart(7, "0")}`
+    );
+  }
+
+  if (Array.isArray(data)) {
+    return data.map(formatDates);
+  }
+
+  return Object.fromEntries(
+    Object.entries(data).map(([key, value]) => [key, formatDates(value)])
+  );
+};
 
 api.interceptors.request.use(
   (config) => {
     const jwtToken = getAccessToken();
     config.headers["Authorization"] = `Bearer ${jwtToken}`;
+
+    if (config.data) {
+      config.data = formatDates(config.data);
+    }
+
     return config;
   },
   (error) => {
@@ -87,7 +114,7 @@ api.interceptors.response.use(
         localStorage.removeItem("refreshToken");
         failedRequestsQueue = [];
         isRefreshing = false;
-        window.location.href = "/login";
+        window.location.href = SignInRoute.path;
         return Promise.reject(err);
       }
     }

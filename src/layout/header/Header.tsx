@@ -27,7 +27,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { logOut } from "../../services/api/auth.api";
 import { useNavigate } from "react-router";
 import { SignInRoute } from "../../routes/auth.route";
-import { WallPaperRoute } from "../../routes/wall.route";
+import { WallpaperRoute } from "../../routes/wall.route";
 import { SettingRoute } from "../../routes/setting.route";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/auth/authSlice";
@@ -57,7 +57,7 @@ export const Header = () => {
 
   const navigateWallPaper = () => {
     if (user) {
-      navigate(WallPaperRoute.path.replace(":id", user?.id));
+      navigate(WallpaperRoute.link.replace(":id", user?.id));
     }
     handleClose();
   };
@@ -75,11 +75,14 @@ export const Header = () => {
     <Box
       sx={{
         width: "100%",
-        background: "#eee",
+        background: "#ffffff",
+        zIndex: "100",
         display: "flex",
         justifyContent: "space-between",
         height: "56px",
-        p: "0 16px",
+        p: "0 1rem",
+        boxShadow: "rgba(50, 50, 93, 0.1) 0px 1px 4px -1px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+        position: "fixed"
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", flex: "1" }}>

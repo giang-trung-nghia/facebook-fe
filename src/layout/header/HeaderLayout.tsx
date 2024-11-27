@@ -7,7 +7,7 @@ const HeaderLayout: React.FC = () => {
   return (
     <>
       <Header />
-      <main>
+      <main style={{ paddingTop: "56px" }}>
         <Outlet />
       </main>
     </>

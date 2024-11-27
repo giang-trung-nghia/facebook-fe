@@ -1,17 +1,14 @@
-import { Box } from "@mui/material";
-import { WallpaperOverview } from "../features/wallpaper/WallpaperOverview";
+import {WallpaperOverview} from "../features/wallpaper/WallpaperOverview";
+import {Route, Routes} from "react-router-dom";
+import About from "./About.tsx";
+import {WallpaperAboutDashboardRoute} from "../routes/wall.route.ts";
 
 export const Wallpaper: React.FC = () => {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        backgroundColor: "#ccc",
-      }}
-    >
-      <WallpaperOverview />
-    </Box>
+    <Routes>
+      <Route path={"/"} element={<WallpaperOverview/>}>
+        <Route path={WallpaperAboutDashboardRoute.path} element={<About/>}/>
+      </Route>
+    </Routes>
   );
 };

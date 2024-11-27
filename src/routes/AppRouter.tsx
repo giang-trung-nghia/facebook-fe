@@ -7,14 +7,14 @@ import {
 } from "react-router-dom";
 import SignIn from "../pages/auth/SignIn";
 import SignUp from "../pages/auth/SignUp";
-import { Dashboard } from "../pages/Dashboard";
-import { Bounce, ToastContainer } from "react-toastify";
-import { DashboardRoute } from "./dashboard.route";
-import { SignInRoute, SignUpRoute } from "./auth.route";
-import { WallPaperRoute } from "./wall.route";
-import { Wallpaper } from "../pages/Wallpaper";
-import { SettingRoute } from "./setting.route";
-import { Setting } from "../pages/Setting";
+import {Dashboard} from "../pages/Dashboard";
+import {Bounce, ToastContainer} from "react-toastify";
+import {DashboardRoute} from "./dashboard.route";
+import {SignInRoute, SignUpRoute} from "./auth.route";
+import {WallpaperRoute} from "./wall.route";
+import {Wallpaper} from "../pages/Wallpaper";
+import {SettingRoute} from "./setting.route";
+import {Setting} from "../pages/Setting";
 import HeaderLayout from "../layout/header/HeaderLayout";
 
 const AppRouter: React.FC = () => {
@@ -22,16 +22,14 @@ const AppRouter: React.FC = () => {
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<Navigate to={SignInRoute.path} />} />
-          <Route path={SignInRoute.path} element={<SignIn />} />
-          <Route path={SignUpRoute.path} element={<SignUp />} />
-          <Route element={<HeaderLayout />}>
-            <Route path={DashboardRoute.path} element={<Dashboard />} />
-            <Route path={WallPaperRoute.path} element={<Wallpaper />} />
-            <Route path={SettingRoute.path} element={<Setting />} />
+          <Route path="/" element={<Navigate to={SignInRoute.path}/>}/>
+          <Route path={SignInRoute.path} element={<SignIn/>}/>
+          <Route path={SignUpRoute.path} element={<SignUp/>}/>
+          <Route element={<HeaderLayout/>}>
+            <Route path={DashboardRoute.path} element={<Dashboard/>}/>
+            <Route path={WallpaperRoute.path} element={<Wallpaper/>}/>
+            <Route path={SettingRoute.path} element={<Setting/>}/>
           </Route>
-
-          <Route path={"*"} element={<Navigate to="/" />} />
         </Routes>
       </Router>
       <ToastContainer

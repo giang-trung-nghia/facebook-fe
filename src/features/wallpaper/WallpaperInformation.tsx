@@ -5,18 +5,24 @@ import {
   Box,
   Button,
   Divider,
-  IconButton,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ArrowDropDownOutlined } from "@mui/icons-material";
-import FbTabList from "../../components/composit/FbTabList";
+import { FbTabList } from "../../components/composit";
 import { EWallpaperTab } from "../../utils/enum/wallpaper.enum";
 import FbUserCardList from "../friend/friendCardList/FbUserCardList";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../store/slices/auth/authSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser, setUser } from "../../store/slices/auth/authSlice";
 import CameraIcon from "../../assets/icons/photo-camera.png";
+import FbUserInformationForm from "../friend/userInformationForm/FbUserInformationForm.tsx";
+import { useNavigate } from "react-router-dom";
+import {
+  WallpaperAboutDashboardRoute,
+  WallpaperRoute,
+} from "../../routes/wall.route.ts";
+import { getUser } from "../../services/api/user.api.ts";
+
 const listWallpaperTab = [
   { key: EWallpaperTab.POST, label: "Post" },
   { key: EWallpaperTab.ABOUT_ME, label: "About Me" },
@@ -29,13 +35,14 @@ const listWallpaperTab = [
 
 export const WallpaperInformation: React.FC = () => {
   const user = useSelector(selectUser);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState<EWallpaperTab>(
     EWallpaperTab.POST
   );
-
+  const [showEditInformationModal, setShowEditInformationModal] =
+    useState(false);
   const [showUserList, setShowUserList] = useState<boolean>(false);
-
   const [friends, setFriends] = useState([
     {
       id: "1",
@@ -69,13 +76,45 @@ export const WallpaperInformation: React.FC = () => {
     },
   ]);
 
+  useEffect(() => {
+    (async () => {
+      await fetchUser();
+    })();
+  }, []);
+
+  const fetchUser = async () => {
+    if (user) {
+      await getUser(user?.id).then((res) => {
+        dispatch(setUser(res));
+      });
+    }
+  };
+
   const handleAddFriend = (id: string) => {
     console.log(`Add friend with ID: ${id}`);
     // Implement the logic for adding a friend based on the ID here
   };
 
   const handleChangeTab = (val: EWallpaperTab) => {
-    console.log(setCurrentTab(val));
+    setCurrentTab(val);
+    switch (val) {
+      case EWallpaperTab.POST: {
+        navigate(WallpaperRoute.link.replace(":id", user?.id ?? "0"));
+        break;
+      }
+      case EWallpaperTab.ABOUT_ME: {
+        navigate(
+          WallpaperAboutDashboardRoute.link.replace(":id", user?.id ?? "0")
+        );
+        break;
+      }
+      case EWallpaperTab.FRIEND: {
+        break;
+      }
+      case EWallpaperTab.IMAGE: {
+        break;
+      }
+    }
   };
 
   return (
@@ -89,47 +128,87 @@ export const WallpaperInformation: React.FC = () => {
           width: "100%",
         }}
       >
-        <Box sx={{ flex: "1" }}>
-          <Badge
-            overlap="circular"
-            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-            badgeContent={
-              <Avatar
-                sx={{ width: "30px", height: "30px", cursor: "pointer" }}
-                variant="rounded"
-                src={CameraIcon}
-              />
-            }
-          >
-            <Avatar
-              alt={user?.name}
-              src={user?.profilePicture}
-              sx={{ width: 150, height: 150 }}
-            />
-          </Badge>
-        </Box>
         <Box
           sx={{
             display: "flex",
-            flexDirection: "column",
-            flex: "2",
-            alignItems: "start",
+            alignItems: "center",
+            justifyContent: "start",
+            flex: "3",
+            gap: "1rem",
           }}
         >
-          <Typography>User name</Typography>
-          <Typography>Friend</Typography>
-          <AvatarGroup max={5} total={1100}>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-            <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-            <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-          </AvatarGroup>
+          <Box>
+            <Badge
+              overlap="circular"
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              badgeContent={
+                <Avatar
+                  sx={{
+                    padding: "4px",
+                    width: "30px",
+                    height: "30px",
+                    cursor: "pointer",
+                    backgroundColor: "#f2f4f7",
+                    ":hover": { backgroundColor: "rgb(225,226,231)" },
+                  }}
+                  variant="circular"
+                  src={CameraIcon}
+                  onClick={() => console.log("Camera clicked")}
+                />
+              }
+            >
+              <Avatar
+                alt={user?.name}
+                src={user?.profilePicture}
+                sx={{
+                  width: 150,
+                  height: 150,
+                  cursor: "pointer",
+                }}
+                onClick={() => console.log("Avatar clicked")}
+              />
+            </Badge>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "start",
+            }}
+          >
+            <Typography>{user?.name}</Typography>
+            <Typography> 126 Friends</Typography>
+            <AvatarGroup max={5} total={100}>
+              <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+              <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
+              <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+              <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
+              <Avatar
+                alt="Trevor Henderson"
+                src="/static/images/avatar/5.jpg"
+              />
+              <Avatar
+                alt="Trevor Henderson"
+                src="/static/images/avatar/5.jpg"
+              />
+              <Avatar
+                alt="Trevor Henderson"
+                src="/static/images/avatar/5.jpg"
+              />
+              <Avatar
+                alt="Trevor Henderson"
+                src="/static/images/avatar/5.jpg"
+              />
+              <Avatar
+                alt="Trevor Henderson"
+                src="/static/images/avatar/5.jpg"
+              />
+              <Avatar
+                alt="Trevor Henderson"
+                src="/static/images/avatar/5.jpg"
+              />
+            </AvatarGroup>
+          </Box>
         </Box>
         <Box
           sx={{
@@ -140,16 +219,20 @@ export const WallpaperInformation: React.FC = () => {
             flex: "1",
           }}
         >
-          <Button variant="contained" fullWidth>
-            New Post
-          </Button>
-          <Button variant="contained" fullWidth>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={() => setShowEditInformationModal(true)}
+          >
             Edit wallpaper
           </Button>
           <Box>
-            <IconButton onClick={() => setShowUserList(!showUserList)}>
+            <Button
+              onClick={() => setShowUserList(!showUserList)}
+              color={"primary"}
+            >
               <ArrowDropDownOutlined />
-            </IconButton>
+            </Button>
           </Box>
         </Box>
       </Box>
@@ -175,6 +258,11 @@ export const WallpaperInformation: React.FC = () => {
           onChange={handleChangeTab}
         ></FbTabList>
       </Box>
+      {user && <FbUserInformationForm
+        user={user}
+        showDialog={showEditInformationModal}
+        setShowDialog={setShowEditInformationModal}
+      />}
     </>
   );
 };

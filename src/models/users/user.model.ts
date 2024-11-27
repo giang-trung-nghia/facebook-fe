@@ -1,10 +1,14 @@
+import { Gender } from "../../utils/enum/app.enum";
+
 export interface IUser {
   id: string;
   name: string;
   email: string;
-  firstName: string;
-  lastName: string;
   phone?: string;
   profilePicture?: string;
-  dob?: Date;
+  dob: Date | null;
+  gender: Gender;
+  location?: string;
+  workAt?: string;
+  university?: string;
 }

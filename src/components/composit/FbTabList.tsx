@@ -13,7 +13,7 @@ interface TabListProps<T> {
   onChange: (key: T) => void;
 }
 
-const FbTabList = <T,>({ tabs, currentTab, onChange }: TabListProps<T>) => {
+export const FbTabList = <T,>({ tabs, currentTab, onChange }: TabListProps<T>) => {
   const handleChange = (_: React.SyntheticEvent, newValue: T) => {
     onChange(newValue);
   };
@@ -39,5 +39,3 @@ const FbTabList = <T,>({ tabs, currentTab, onChange }: TabListProps<T>) => {
     </Box>
   );
 };
-
-export default FbTabList;

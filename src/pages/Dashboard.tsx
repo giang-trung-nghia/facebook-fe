@@ -1,10 +1,10 @@
-import { Box, Button } from "@mui/material";
-import { useSelector } from "react-redux";
-import { selectUser, setUser } from "../store/slices/auth/authSlice";
-import { useEffect } from "react";
-import { getUser } from "../services/api/user.api";
-import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import {Box, Button} from "@mui/material";
+import {useSelector} from "react-redux";
+import {selectUser, setUser} from "../store/slices/auth/authSlice";
+import {useEffect} from "react";
+import {getUser} from "../services/api/user.api";
+import {toast} from "react-toastify";
+import {useDispatch} from "react-redux";
 
 export const Dashboard: React.FC = () => {
   const user = useSelector(selectUser);
