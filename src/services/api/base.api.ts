@@ -5,6 +5,7 @@ import { setLoading } from "../../store/slices/loadingSlice";
 import { postRefreshToken } from "./auth.api";
 import { toast } from "react-toastify";
 import { SignInRoute } from "../../routes";
+import { formatDateInRequest, traverseAndParseDates } from "../../utils/helper";
 
 let isRefreshing = false;
 let failedRequestsQueue: Array<(token: string) => void> = [];
@@ -22,34 +23,13 @@ export const api = axios.create({
   timeout: 30000,
 });
 
-// Utility function to check and format Date objects
-const formatDates = (data: any): any => {
-  if (!data || typeof data !== "object") return data;
-
-  if (data instanceof Date) {
-    return (
-      `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, "0")}-${String(data.getDate()).padStart(2, "0")}T` +
-      `${String(data.getHours()).padStart(2, "0")}:${String(data.getMinutes()).padStart(2, "0")}:${String(data.getSeconds()).padStart(2, "0")}.` +
-      `${String(data.getMilliseconds()).padStart(7, "0")}`
-    );
-  }
-
-  if (Array.isArray(data)) {
-    return data.map(formatDates);
-  }
-
-  return Object.fromEntries(
-    Object.entries(data).map(([key, value]) => [key, formatDates(value)])
-  );
-};
-
 api.interceptors.request.use(
   (config) => {
     const jwtToken = getAccessToken();
     config.headers["Authorization"] = `Bearer ${jwtToken}`;
 
     if (config.data) {
-      config.data = formatDates(config.data);
+      config.data = formatDateInRequest(config.data);
     }
 
     return config;
@@ -60,7 +40,12 @@ api.interceptors.request.use(
 );
 
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    if (response.data) {
+      response.data = traverseAndParseDates(response.data);
+    }
+    return response;
+  },
   async (error: AxiosError) => {
     const originalRequest = error.config as AxiosRequestConfig & {
       _retry?: boolean;
@@ -97,14 +82,12 @@ api.interceptors.response.use(
 
           // Process the queued requests with the new token
           failedRequestsQueue.forEach((callback) => callback(newAccessToken));
-          console.log(failedRequestsQueue);
 
           failedRequestsQueue = [];
           isRefreshing = false;
 
           // Retry the original request with the new access token
           originalRequest.headers!.Authorization = `Bearer ${newAccessToken}`;
-          console.log(originalRequest);
 
           return api(originalRequest);
         }
@@ -123,6 +106,7 @@ api.interceptors.response.use(
     } else {
       toast.error("An error occurred. Please try again.");
     }
+
     dispatch(setLoading(false));
     return Promise.reject(error);
   }

@@ -21,7 +21,8 @@ import {
   WallpaperAboutDashboardRoute,
   WallpaperRoute,
 } from "../../routes/wall.route.ts";
-import { getUser } from "../../services/api/user.api.ts";
+import { getUser, getUsersPaging } from "../../services/api/user.api.ts";
+import { IPagingRequest } from "../../models/base/pagingRequest.model.ts";
 
 const listWallpaperTab = [
   { key: EWallpaperTab.POST, label: "Post" },
@@ -43,6 +44,7 @@ export const WallpaperInformation: React.FC = () => {
   const [showEditInformationModal, setShowEditInformationModal] =
     useState(false);
   const [showUserList, setShowUserList] = useState<boolean>(false);
+  const [isMe, setIsMe] = useState<boolean>(false);
   const [friends, setFriends] = useState([
     {
       id: "1",
@@ -79,15 +81,38 @@ export const WallpaperInformation: React.FC = () => {
   useEffect(() => {
     (async () => {
       await fetchUser();
+      await fetchUsersMaybeYouKnow();
     })();
   }, []);
 
   const fetchUser = async () => {
     if (user) {
       await getUser(user?.id).then((res) => {
+        console.log(user);
+
         dispatch(setUser(res));
       });
     }
+  };
+
+  const fetchUsersMaybeYouKnow = async () => {
+    const body: IPagingRequest = {
+      pageNumber: 1,
+      pageSize: 10,
+    };
+    await getUsersPaging(body).then((res) => {
+      console.log(res);
+      setFriends(
+        res.map((e :any) => {
+          return {
+            id: e.id,
+            avatarUrl: e.profilePicture,
+            friendName: e.Name,
+            mutualFriends: Math.floor(Math.random() * 100),
+          };
+        })
+      );
+    });
   };
 
   const handleAddFriend = (id: string) => {
@@ -258,11 +283,13 @@ export const WallpaperInformation: React.FC = () => {
           onChange={handleChangeTab}
         ></FbTabList>
       </Box>
-      {user && <FbUserInformationForm
-        user={user}
-        showDialog={showEditInformationModal}
-        setShowDialog={setShowEditInformationModal}
-      />}
+      {user && (
+        <FbUserInformationForm
+          user={user}
+          showDialog={showEditInformationModal}
+          setShowDialog={setShowEditInformationModal}
+        />
+      )}
     </>
   );
 };

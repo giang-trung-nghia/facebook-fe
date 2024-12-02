@@ -56,10 +56,11 @@ const FbUserInformationForm: React.FC<Props> = ({
   const updateUserRequest = async () => {
     await updateUser(user.id, userInfo)
       .then((res) => {
-        dispatch(setUser(user));
+        dispatch(setUser(res));
       })
       .finally(() => {
         setShowDialog(false);
+        setEditable(false)
       });
   };
 
