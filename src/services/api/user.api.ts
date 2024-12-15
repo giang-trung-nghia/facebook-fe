@@ -1,5 +1,5 @@
-import { IPagingRequest } from "../../models/base/pagingRequest.model";
-import { IPagingResponse } from "../../models/base/pagingResponse.model";
+import { IPagingRequest } from "../../models/base/PagingRequest.model";
+import { IPagingResponse } from "../../models/base/PagingResponse.model";
 import { IUser } from "../../models/users/user.model";
 import { deleteApi, getApi, postApi, putApi } from "./base.api";
 
@@ -23,10 +23,21 @@ export const getUsersPaging = async (
   body: IPagingRequest
 ): Promise<IPagingResponse<IUser>> => {
   return await getApi(
-    `/user/paging?pageNumber=${body.pageNumber}&pageSize=${body.pageSize}`+
-    `${body.sort ? `&sort=${body.sort}` : ""}`+
-    `${body.sortBy ? `&sortBy=${body.sortBy}` : ""}`+
-    `${body.searchKey ? `&searchKey=${body.searchKey}` : ""}`+
-    `${body.searchBy ? `&searchBy=${body.searchBy}` : ""}`
+    `/user/paging?pageNumber=${body.pageNumber}&pageSize=${body.pageSize}` +
+      `${body.sort ? `&sort=${body.sort}` : ""}` +
+      `${body.sortBy ? `&sortBy=${body.sortBy}` : ""}` +
+      `${body.searchKey ? `&searchKey=${body.searchKey}` : ""}` +
+      `${body.searchBy ? `&searchBy=${body.searchBy}` : ""}`
+  );
+};
+
+export const getStrangePeople = async (
+  id: string,
+  body: IPagingRequest
+): Promise<IPagingResponse<IUser>> => {
+  return await getApi(
+    `/user/strange-people?id=${id}` +
+      `&pageNumber=${body.pageNumber}` +
+      `&pageSize=${body.pageSize}`
   );
 };

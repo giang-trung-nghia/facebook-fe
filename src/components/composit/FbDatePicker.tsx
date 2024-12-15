@@ -1,5 +1,4 @@
 import * as React from "react";
-import TextField from "@mui/material/TextField";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -7,7 +6,7 @@ import { Box } from "@mui/material";
 
 interface FbDatetimePickerProps {
   label: string;
-  value: Date | null;
+  value: Date | null | undefined;
   onChange: (date: Date | null) => void;
   format?: string;
   time?: boolean; // Optional prop to show time picker

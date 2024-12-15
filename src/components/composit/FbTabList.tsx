@@ -13,19 +13,23 @@ interface TabListProps<T> {
   onChange: (key: T) => void;
 }
 
-export const FbTabList = <T,>({ tabs, currentTab, onChange }: TabListProps<T>) => {
+export const FbTabList = <T,>({
+  tabs,
+  currentTab,
+  onChange,
+}: TabListProps<T>) => {
   const handleChange = (_: React.SyntheticEvent, newValue: T) => {
     onChange(newValue);
   };
 
   return (
-    <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+    <Box>
       <Tabs
         value={currentTab}
         onChange={handleChange}
         indicatorColor="primary"
         textColor="inherit"
-        variant="scrollable"
+        variant="standard"
         scrollButtons="auto"
       >
         {tabs.map((tab) => (

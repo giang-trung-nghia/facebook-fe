@@ -5,3 +5,7 @@
 body {
   @apply font-sans;
 }
+
+.MuiButtonBase-root {
+  text-transform: none !important;
+}

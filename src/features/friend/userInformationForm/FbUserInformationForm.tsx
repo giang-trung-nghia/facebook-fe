@@ -100,6 +100,14 @@ const FbUserInformationForm: React.FC<Props> = ({
             fullWidth
             disabled={!editable}
           />
+           <TextField
+            label="Avatar url"
+            name="profilePicture"
+            value={userInfo.profilePicture}
+            onChange={handleInputChange}
+            fullWidth
+            disabled={!editable}
+          />
           <Box sx={{ px: "1rem", display: "flex" }}>
             <Box sx={{ flex: "3" }}>
               <Typography>Gender</Typography>

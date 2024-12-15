@@ -174,17 +174,24 @@ export async function putApi<TRequest, TResponse>(
   }
 }
 
-export async function deleteApi<TResponse>(path: string): Promise<TResponse> {
+export async function deleteApi<TResponse>(
+  path: string,
+  disabledLoading = false
+): Promise<TResponse> {
   const dispatch = store.dispatch;
   try {
-    dispatch(setLoading(true));
+    if (!disabledLoading) {
+      dispatch(setLoading(true));
+    }
     const response = await api.delete<TResponse>(path);
     return response.data;
   } catch (e: any) {
     handleError(e);
     throw new Error(e);
   } finally {
-    dispatch(setLoading(false));
+    if (!disabledLoading) {
+      dispatch(setLoading(false));
+    }
   }
 }
 

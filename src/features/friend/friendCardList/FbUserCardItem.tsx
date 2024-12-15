@@ -1,3 +1,5 @@
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import React from "react";
 import {
   Card,
@@ -6,50 +8,92 @@ import {
   CardMedia,
   Button,
   Typography,
+  IconButton,
 } from "@mui/material";
+import UserAvtDefault from "../../../assets/icons/user.png";
+import CloseIcon from "@mui/icons-material/Close";
+import { IStrangeUser } from "../../../models/users/user.model";
 
 interface FbFriendCardItemProps {
-  id: string; // Unique identifier for each friend
-  avatarUrl: string;
-  friendName: string;
-  mutualFriends: number;
-  onAddFriend: (id: string) => void; // Pass ID to handle the logic
+  user: IStrangeUser;
+  onAddFriend: (id: string) => void;
+  onRemoveItem: (id: string) => void;
+  onCancelAddFriend: (user: IStrangeUser) => void;
 }
 
 const FbUserCardItem: React.FC<FbFriendCardItemProps> = ({
-  id,
-  avatarUrl,
-  friendName,
-  mutualFriends,
+  user,
   onAddFriend,
+  onRemoveItem,
+  onCancelAddFriend
 }) => {
+
   const handleAddFriend = () => {
-    onAddFriend(id); // Trigger the onAddFriend callback with the friend's ID
+    onAddFriend(user.id);
+  };
+
+  const handleCancelAddFriend = () => {
+    user && onCancelAddFriend(user);
+  };
+
+  const removeItem = () => {
+    onRemoveItem(user.id);
   };
 
   return (
-    <Card sx={{ minWidth: "200px", margin: 1 }}>
+    <Card sx={{ minWidth: "160px", margin: 1, boxShadow: 3 }}>
       <CardMedia
-        sx={{ height: 140, width: "200px" }}
-        image={avatarUrl}
-        title={friendName}
-      />
-      <CardContent sx={{ p: "0 8px" }}>
+        sx={{ height: 140, width: "160px", position: "relative" }}
+        image={user.profilePicture ?? UserAvtDefault}
+        title={user.name}
+      >
+        <IconButton
+          sx={{
+            position: "absolute",
+            right: "0.5rem",
+            top: "0.5rem",
+            background: "#33333388",
+            color: "#dddddddd",
+          }}
+          size="small"
+          onClick={removeItem}
+        >
+          <CloseIcon />
+        </IconButton>
+      </CardMedia>
+      <CardContent sx={{ p: "4px 8px" }}>
         <Typography
           gutterBottom
-          variant="h6"
+          variant="body1"
           sx={{ overflow: "hidden", textWrap: "nowrap" }}
         >
-          {friendName}
+          {user.name}
         </Typography>
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
-          {mutualFriends} mutual friend{mutualFriends > 1 ? "s" : ""}
+          {user.mutualFriends} mutual friend{user.mutualFriends > 1 ? "s" : ""}
         </Typography>
       </CardContent>
       <CardActions sx={{ px: "8px" }}>
-        <Button size="small" variant="contained" onClick={handleAddFriend}>
-          Add Friend
-        </Button>
+        {user.isAdded ? (
+          <Button
+            size="small"
+            variant="contained"
+            color="secondary"
+            onClick={handleCancelAddFriend}
+            startIcon={<PersonRemoveIcon />}
+          >
+            Cancel
+          </Button>
+        ) : (
+          <Button
+            size="small"
+            variant="contained"
+            onClick={handleAddFriend}
+            startIcon={<PersonAddIcon />}
+          >
+            Add Friend
+          </Button>
+        )}
       </CardActions>
     </Card>
   );
