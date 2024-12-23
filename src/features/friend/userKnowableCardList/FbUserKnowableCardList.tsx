@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import FbUserCardItem from "./FbUserCardItem";
+import FbUserKnowableCardItem from "./FbUserKnowableCardItem";
 import { Box, Button, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../../store/slices/auth/authSlice";
@@ -20,7 +20,7 @@ interface FbFriendCardListProps {
   onAddFriend?: (id: string) => void;
 }
 
-const FbUserCardList: React.FC<FbFriendCardListProps> = ({ onAddFriend }) => {
+const FbUserKnowableCardList: React.FC<FbFriendCardListProps> = ({ onAddFriend }) => {
   const user = useSelector(selectUser);
   const [strangeUsers, setStrangeUsers] = useState<IStrangeUser[]>([]);
 
@@ -133,7 +133,7 @@ const FbUserCardList: React.FC<FbFriendCardListProps> = ({ onAddFriend }) => {
         }}
       >
         {strangeUsers.map((user) => (
-          <FbUserCardItem
+          <FbUserKnowableCardItem
             key={user.id}
             user={user}
             onAddFriend={handleAddFriend}
@@ -146,4 +146,4 @@ const FbUserCardList: React.FC<FbFriendCardListProps> = ({ onAddFriend }) => {
   );
 };
 
-export default FbUserCardList;
+export default FbUserKnowableCardList;

@@ -123,54 +123,69 @@ const handleError = async (e: any) => {
 export async function postApi<TRequest, TResponse>(
   path: string,
   payload: TRequest,
-  config?: AxiosRequestConfig
+  config?: AxiosRequestConfig,
+  disabledLoading = false
 ): Promise<TResponse> {
   const dispatch = store.dispatch;
   try {
-    dispatch(setLoading(true));
+    if (!disabledLoading) {
+      dispatch(setLoading(true));
+    }
     const response = await api.post<TResponse>(path, payload, config);
     return response.data;
   } catch (e: any) {
     handleError(e);
     throw new Error(e);
   } finally {
-    dispatch(setLoading(false));
+    if (!disabledLoading) {
+      dispatch(setLoading(false));
+    }
   }
 }
 
 export async function patchApi<TRequest, TResponse>(
   path: string,
   payload: TRequest,
-  config?: AxiosRequestConfig
+  config?: AxiosRequestConfig,
+  disabledLoading = false
 ): Promise<TResponse> {
   const dispatch = store.dispatch;
   try {
-    dispatch(setLoading(true));
+    if (!disabledLoading) {
+      dispatch(setLoading(true));
+    }
     const response = await api.patch<TResponse>(path, payload, config);
     return response.data;
   } catch (e: any) {
     handleError(e);
     throw new Error(e);
   } finally {
-    dispatch(setLoading(false));
+    if (!disabledLoading) {
+      dispatch(setLoading(false));
+    }
   }
 }
 
 export async function putApi<TRequest, TResponse>(
   path: string,
   payload: TRequest,
-  config?: AxiosRequestConfig
+  config?: AxiosRequestConfig,
+  disabledLoading = false
 ): Promise<TResponse> {
   const dispatch = store.dispatch;
   try {
-    dispatch(setLoading(true));
+    if (!disabledLoading) {
+      dispatch(setLoading(true));
+    }
     const response = await api.put<TResponse>(path, payload, config);
     return response.data;
   } catch (e: any) {
     handleError(e);
     throw new Error(e);
   } finally {
-    dispatch(setLoading(false));
+    if (!disabledLoading) {
+      dispatch(setLoading(false));
+    }
   }
 }
 

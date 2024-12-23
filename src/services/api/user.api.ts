@@ -1,6 +1,6 @@
 import { IPagingRequest } from "../../models/base/PagingRequest.model";
 import { IPagingResponse } from "../../models/base/PagingResponse.model";
-import { IUser } from "../../models/users/user.model";
+import { IUser, IFriendOfUser } from "../../models/users/user.model";
 import { deleteApi, getApi, postApi, putApi } from "./base.api";
 
 export const getUser = async (id: string): Promise<IUser> => {
@@ -28,6 +28,17 @@ export const getUsersPaging = async (
       `${body.sortBy ? `&sortBy=${body.sortBy}` : ""}` +
       `${body.searchKey ? `&searchKey=${body.searchKey}` : ""}` +
       `${body.searchBy ? `&searchBy=${body.searchBy}` : ""}`
+  );
+};
+
+export const getAddFriendOffers = async (
+  id: string,
+  body: IPagingRequest
+): Promise<IPagingResponse<IFriendOfUser>> => {
+  return await getApi(
+    `/user/add-friend-offers?id=${id}` +
+      `&pageNumber=${body.pageNumber}` +
+      `&pageSize=${body.pageSize}`
   );
 };
 

@@ -5,7 +5,7 @@ export interface IRelationship {
   fromUserId: string;
   toUserId: string;
   relationshipType: ERelationshipType;
-  relationshipStatus: ERelationshipStatus
+  status: ERelationshipStatus
 }
 
 export interface ICreateRelationship {

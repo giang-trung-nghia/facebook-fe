@@ -1,11 +1,15 @@
 import { Gender } from "../../utils/enum/app.enum";
+import { IRelationship } from "../relationship/relationship.model";
 
-export interface IUser {
+export interface IBaseUser {
   id: string;
   name: string;
+  profilePicture?: string;
+}
+
+export interface IUser extends IBaseUser {
   email?: string;
   phone?: string;
-  profilePicture?: string;
   dob?: Date | null;
   gender?: Gender;
   location?: string;
@@ -13,11 +17,18 @@ export interface IUser {
   university?: string;
 }
 
-export interface IStrangeUser {
-  id: string;
-  name: string;
-  profilePicture?: string;
+export interface IFriendOfUser extends IUser {
+  mutualFriends?: number;
+  relationship: IRelationship;
+}
+
+export interface IStrangeUser extends IBaseUser {
   mutualFriends: number;
   isAdded: boolean;
   relationshipId?: string;
+}
+
+export interface IAddFriendOffer extends IBaseUser {
+  mutualFriends: number;
+  relationship: IRelationship;
 }

@@ -13,7 +13,7 @@ export const getRelationship = async (id: string): Promise<IRelationship> => {
 export const createRelationship = async (
   relationship: ICreateRelationship
 ): Promise<IRelationship> => {
-  return await postApi(`/relationship`, relationship);
+  return await postApi(`/relationship`, relationship, undefined, true);
 };
 
 export const updateRelationship = async (
@@ -37,4 +37,8 @@ export const getRelationshipsPaging = async (
       `${body.searchKey ? `&searchKey=${body.searchKey}` : ""}` +
       `${body.searchBy ? `&searchBy=${body.searchBy}` : ""}`
   );
+};
+
+export const acceptFriendRequest = async (id: string): Promise<IRelationship> => {
+  return await putApi(`/relationship/accept-friend?id=${id}`, null);
 };

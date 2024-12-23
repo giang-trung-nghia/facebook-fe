@@ -4,9 +4,9 @@ import { Box, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../../store/slices/auth/authSlice.ts";
 import {
-  WallpaperAboutCareerRoute,
-  WallpaperAboutOverviewRoute,
-  WallpaperAboutPlaceRoute,
+  AboutCareerRoute,
+  AboutOverviewRoute,
+  AboutPlaceRoute,
 } from "../../../routes/wall.route.ts";
 import { FbNavList } from "../../../components/composit";
 
@@ -14,16 +14,16 @@ const AboutDashboard: React.FC = () => {
   const user = useSelector(selectUser);
   const navListInit = [
     {
-      link: WallpaperAboutOverviewRoute.link.replace(":id", user?.id ?? "0"),
-      label: WallpaperAboutOverviewRoute.name,
+      link: AboutOverviewRoute.link.replace(":id", user?.id ?? "0"),
+      label: AboutOverviewRoute.name,
     },
     {
-      link: WallpaperAboutPlaceRoute.link.replace(":id", user?.id ?? "0"),
-      label: WallpaperAboutPlaceRoute.name,
+      link: AboutPlaceRoute.link.replace(":id", user?.id ?? "0"),
+      label: AboutPlaceRoute.name,
     },
     {
-      link: WallpaperAboutCareerRoute.link.replace(":id", user?.id ?? "0"),
-      label: WallpaperAboutCareerRoute.name,
+      link: AboutCareerRoute.link.replace(":id", user?.id ?? "0"),
+      label: AboutCareerRoute.name,
     },
   ];
 

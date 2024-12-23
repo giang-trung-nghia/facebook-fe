@@ -21,13 +21,12 @@ interface FbFriendCardItemProps {
   onCancelAddFriend: (user: IStrangeUser) => void;
 }
 
-const FbUserCardItem: React.FC<FbFriendCardItemProps> = ({
+const FbUserKnowableCardItem: React.FC<FbFriendCardItemProps> = ({
   user,
   onAddFriend,
   onRemoveItem,
-  onCancelAddFriend
+  onCancelAddFriend,
 }) => {
-
   const handleAddFriend = () => {
     onAddFriend(user.id);
   };
@@ -69,9 +68,14 @@ const FbUserCardItem: React.FC<FbFriendCardItemProps> = ({
         >
           {user.name}
         </Typography>
-        <Typography variant="body2" sx={{ color: "text.secondary" }}>
-          {user.mutualFriends} mutual friend{user.mutualFriends > 1 ? "s" : ""}
-        </Typography>
+        <div className="h-5">
+          {user.mutualFriends != 0 && (
+            <Typography variant="body2" sx={{ color: "text.secondary" }}>
+              {user.mutualFriends} mutual friend
+              {user.mutualFriends > 1 ? "s" : ""}
+            </Typography>
+          )}
+        </div>
       </CardContent>
       <CardActions sx={{ px: "8px" }}>
         {user.isAdded ? (
@@ -99,4 +103,4 @@ const FbUserCardItem: React.FC<FbFriendCardItemProps> = ({
   );
 };
 
-export default FbUserCardItem;
+export default FbUserKnowableCardItem;

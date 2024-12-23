@@ -11,17 +11,18 @@ import React, { useEffect, useState } from "react";
 import { ArrowDropDownOutlined } from "@mui/icons-material";
 import { FbTabList } from "../../components/composit";
 import { EWallpaperTab } from "../../utils/enum/wallpaper.enum";
-import FbUserCardList from "../friend/friendCardList/FbUserCardList";
+import FbUserKnowableCardList from "../friend/userKnowableCardList/FbUserKnowableCardList.tsx";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser, setUser } from "../../store/slices/auth/authSlice";
 import CameraIcon from "../../assets/icons/photo-camera.png";
 import FbUserInformationForm from "../friend/userInformationForm/FbUserInformationForm.tsx";
 import { useNavigate } from "react-router-dom";
 import {
-  WallpaperAboutDashboardRoute,
+  AboutDashboardRoute,
   WallpaperRoute,
 } from "../../routes/wall.route.ts";
 import { getUser } from "../../services/api/user.api.ts";
+import { FriendDashboardRoute } from "../../routes/wallpaper/friend/friend.route.ts";
 
 const listWallpaperTab = [
   { key: EWallpaperTab.POST, label: "Post" },
@@ -67,12 +68,11 @@ export const WallpaperInformation: React.FC = () => {
         break;
       }
       case EWallpaperTab.ABOUT_ME: {
-        navigate(
-          WallpaperAboutDashboardRoute.link.replace(":id", user?.id ?? "0")
-        );
+        navigate(AboutDashboardRoute.link.replace(":id", user?.id ?? "0"));
         break;
       }
       case EWallpaperTab.FRIEND: {
+        navigate(FriendDashboardRoute.link.replace(":id", user?.id ?? "0"));
         break;
       }
       case EWallpaperTab.IMAGE: {
@@ -207,7 +207,7 @@ export const WallpaperInformation: React.FC = () => {
           display: showUserList ? "visible" : "none",
         }}
       >
-        <FbUserCardList />
+        <FbUserKnowableCardList />
       </Box>
       <Divider sx={{ width: "100%", mt: "2rem", mb: "1rem" }} />
       <Box

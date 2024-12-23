@@ -18,7 +18,7 @@ export const WallpaperOverview: React.FC = () => {
           flexDirection: "column",
           alignItems: "center",
           width: "70%",
-          padding: "0.5rem",
+          padding: "0.5rem 0.5rem 0 0.5rem",
           backgroundColor: "#fff",
           borderRadius: "8px",
           border: "1px solid #dedede"
