@@ -28,6 +28,8 @@ const FbFriendList: React.FC<FriendListProps> = ({ friends, setFriends }) => {
       case FriendAction.UNFRIEND:
         alert(`Đã hủy kết bạn với ${user.id}`);
         break;
+      case FriendAction.SEND_MESSAGE:
+        
       default:
         break;
     }

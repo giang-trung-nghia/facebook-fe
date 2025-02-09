@@ -11,6 +11,7 @@ export const enum EFriendTab {
 export enum FriendAction {
   FAVORITE = "favorite",
   UNFOLLOW = "unfollow",
+  SEND_MESSAGE = "send_message",
   UNFRIEND = "unfriend",
 }
 

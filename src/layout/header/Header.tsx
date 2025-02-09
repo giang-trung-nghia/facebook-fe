@@ -13,6 +13,7 @@ import FacebookIcon from "../../assets/icons/facebook.png";
 import UserIcon from "../../assets/icons/user.png";
 import { FbIcon } from "../../components/commons/FbIcon";
 import HomeIcon from "@mui/icons-material/Home";
+import SearchIcon from "@mui/icons-material/Search";
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
@@ -81,14 +82,30 @@ export const Header = () => {
         justifyContent: "space-between",
         height: "56px",
         p: "0 1rem",
-        boxShadow: "rgba(50, 50, 93, 0.1) 0px 1px 4px -1px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
-        position: "fixed"
+        boxShadow:
+          "rgba(50, 50, 93, 0.1) 0px 1px 4px -1px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+        position: "fixed",
       }}
     >
-      <Box sx={{ display: "flex", alignItems: "center", flex: "1" }}>
+      <Box
+        sx={{ display: "flex", alignItems: "center", flex: "1", gap: "0.5rem" }}
+      >
         <FbIcon src={FacebookIcon} alt="Logo" onClick={navigateDashboard} />
-        <Box>
-          <Input size="medium"></Input>
+        <Box
+          sx={{
+            background: "#f0f2f5",
+            borderRadius: "2rem",
+            padding: "0.25rem 0.75rem",
+            height: "2.5rem",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <SearchIcon sx={{ opacity: "0.5" }} />
+          <input
+            className="no-underline bg-transparent border-none outline-none ml-1"
+            placeholder="Searching on facebook"
+          ></input>
         </Box>
       </Box>
       <Box
@@ -101,6 +118,7 @@ export const Header = () => {
       >
         <IconButton
           sx={{ width: "120px", height: "40px", borderRadius: "12px" }}
+          onClick={navigateDashboard}
           color="primary"
         >
           <HomeIcon />
@@ -130,6 +148,7 @@ export const Header = () => {
           alignItems: "center",
           justifyContent: "flex-end",
           flex: "1",
+          gap: "0.25rem",
         }}
       >
         <IconButton>
@@ -142,7 +161,6 @@ export const Header = () => {
           <NotificationsNoneOutlinedIcon />
         </IconButton>
         <Avatar
-          alt="Remy Sharp"
           src={user?.profilePicture ?? UserIcon}
           sx={{ width: 40, height: 40, cursor: "pointer" }}
           onClick={handleAvatarClick}

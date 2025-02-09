@@ -21,8 +21,11 @@ import {
   AboutDashboardRoute,
   WallpaperRoute,
 } from "../../routes/wall.route.ts";
-import { getUser } from "../../services/api/user.api.ts";
+import { getFriends, getUser } from "../../services/api/user.api.ts";
 import { FriendDashboardRoute } from "../../routes/wallpaper/friend/friend.route.ts";
+import { IPagingRequest } from "../../models/base/PagingRequest.model.ts";
+import { IFriendOfUser } from "../../models/users/user.model.ts";
+import { IPagingResponse } from "../../models/base/PagingResponse.model.ts";
 
 const listWallpaperTab = [
   { key: EWallpaperTab.POST, label: "Post" },
@@ -44,13 +47,43 @@ export const WallpaperInformation: React.FC = () => {
   const [showEditInformationModal, setShowEditInformationModal] =
     useState(false);
   const [showUserList, setShowUserList] = useState<boolean>(false);
+  const [friends, setFriends] = useState<IPagingResponse<IFriendOfUser>>();
   const [isMe, setIsMe] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
       await fetchUser();
+      await fetchFriends();
     })();
   }, []);
+  
+    const fetchFriends = async () => {
+      const body: IPagingRequest = {
+        pageNumber: 1,
+        pageSize: 5,
+      };
+      if (!user) return;
+  
+      await getFriends(user?.id, body).then((res) => {
+        const data: IFriendOfUser[] = res.data.map((e) => {
+          return {
+            id: e.id,
+            profilePicture: e.profilePicture,
+            name: e.name,
+            relationship: e.relationship,
+            mutualFriends: Math.floor(Math.random() * 100),
+          };
+        });
+        setFriends((prev) => ({
+          ...prev,
+          data,
+          total: res.total,
+          totalPage: res.totalPage,
+          page: res.page,
+          pageSize: res.pageSize
+        }));
+      });
+    };
 
   const fetchUser = async () => {
     if (user) {
@@ -141,36 +174,11 @@ export const WallpaperInformation: React.FC = () => {
             }}
           >
             <Typography>{user?.name}</Typography>
-            <Typography> 126 Friends</Typography>
-            <AvatarGroup max={5} total={100}>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-              <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-              <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-              <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
-              <Avatar
-                alt="Trevor Henderson"
-                src="/static/images/avatar/5.jpg"
-              />
-              <Avatar
-                alt="Trevor Henderson"
-                src="/static/images/avatar/5.jpg"
-              />
-              <Avatar
-                alt="Trevor Henderson"
-                src="/static/images/avatar/5.jpg"
-              />
-              <Avatar
-                alt="Trevor Henderson"
-                src="/static/images/avatar/5.jpg"
-              />
-              <Avatar
-                alt="Trevor Henderson"
-                src="/static/images/avatar/5.jpg"
-              />
-              <Avatar
-                alt="Trevor Henderson"
-                src="/static/images/avatar/5.jpg"
-              />
+            <Typography>{friends?.total} Friends</Typography>
+            <AvatarGroup max={5} total={friends?.total}>
+              {friends?.data.map((f) => (
+                <Avatar key={f.id} alt={f.name} src={f.profilePicture}/>
+              ))}
             </AvatarGroup>
           </Box>
         </Box>

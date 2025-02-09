@@ -16,6 +16,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import UnfoldLessIcon from "@mui/icons-material/UnfoldLess";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+import MessageIcon from '@mui/icons-material/Message';
 import { IFriendOfUser } from "../../../models/users/user.model";
 import UserAvtDefault from "../../../assets/icons/user.png";
 import {
@@ -27,7 +28,10 @@ import { ERelationshipStatus } from "../../../utils/enum/relationship.enum";
 interface FriendCardProps {
   user: IFriendOfUser;
   onAction: (action: FriendAction, user: IFriendOfUser) => void;
-  onAddFriendOfferAction: (action: AddFriendOfferAction, user: IFriendOfUser) => void;
+  onAddFriendOfferAction: (
+    action: AddFriendOfferAction,
+    user: IFriendOfUser
+  ) => void;
 }
 
 const FbFriendCard: React.FC<FriendCardProps> = ({
@@ -66,7 +70,7 @@ const FbFriendCard: React.FC<FriendCardProps> = ({
         borderRadius: "12px",
         boxShadow: "none",
         backgroundColor: "#fff",
-        border: "1px solid #ccc"
+        border: "1px solid #ccc",
       }}
     >
       {/* Avatar và Thông tin */}
@@ -87,10 +91,12 @@ const FbFriendCard: React.FC<FriendCardProps> = ({
           <Typography variant="body1" sx={{ fontWeight: "bold" }}>
             {user.name}
           </Typography>
-         {user.mutualFriends && <Typography variant="body2" color="text.secondary">
-            {user.mutualFriends} mutual friend
-            {user.mutualFriends > 1 ? "s" : ""}
-          </Typography>}
+          {user.mutualFriends && (
+            <Typography variant="body2" color="text.secondary">
+              {user.mutualFriends} mutual friend
+              {user.mutualFriends > 1 ? "s" : ""}
+            </Typography>
+          )}
         </CardContent>
       </Box>
 
@@ -108,6 +114,13 @@ const FbFriendCard: React.FC<FriendCardProps> = ({
                 <StarBorderIcon fontSize="small" />
               </ListItemIcon>
               <ListItemText>Favourite</ListItemText>
+            </MenuItem>
+
+            <MenuItem onClick={() => handleAction(FriendAction.SEND_MESSAGE)}>
+              <ListItemIcon>
+                <MessageIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Send message</ListItemText>
             </MenuItem>
 
             <MenuItem onClick={() => handleAction(FriendAction.UNFOLLOW)}>
@@ -132,7 +145,7 @@ const FbFriendCard: React.FC<FriendCardProps> = ({
             flexDirection: "column",
             justifyContent: "space-between",
             gap: "0.5rem",
-            width: "30%"
+            width: "30%",
           }}
         >
           <Button

@@ -31,6 +31,16 @@ export const getUsersPaging = async (
   );
 };
 
+export const getFriends = async (
+  id: string,
+  body: IPagingRequest
+): Promise<IPagingResponse<IFriendOfUser>> => {
+  return await getApi(`/user/friends?id=${id}` +
+    `&pageNumber=${body.pageNumber}` +
+    `&pageSize=${body.pageSize}`
+  )
+};
+
 export const getAddFriendOffers = async (
   id: string,
   body: IPagingRequest
