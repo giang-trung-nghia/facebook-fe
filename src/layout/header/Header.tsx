@@ -2,7 +2,6 @@ import {
   Avatar,
   Box,
   IconButton,
-  Input,
   ListItemIcon,
   ListItemText,
   Menu,
@@ -13,7 +12,6 @@ import FacebookIcon from "../../assets/icons/facebook.png";
 import UserIcon from "../../assets/icons/user.png";
 import { FbIcon } from "../../components/commons/FbIcon";
 import HomeIcon from "@mui/icons-material/Home";
-import SearchIcon from "@mui/icons-material/Search";
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
@@ -33,6 +31,7 @@ import { SettingRoute } from "../../routes/setting.route";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/auth/authSlice";
 import { DashboardRoute } from "../../routes";
+import FbSearchBox from "../../components/commons/FbSearchBox";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -72,6 +71,10 @@ export const Header = () => {
     navigate(DashboardRoute.path);
   };
 
+  const handleSearch = (val: string) => {
+    console.log(val);
+  };
+
   return (
     <Box
       sx={{
@@ -88,24 +91,20 @@ export const Header = () => {
       }}
     >
       <Box
-        sx={{ display: "flex", alignItems: "center", flex: "1", gap: "0.5rem" }}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          flex: "1",
+          gap: "0.5rem",
+          maxWidth: "20%",
+        }}
       >
         <FbIcon src={FacebookIcon} alt="Logo" onClick={navigateDashboard} />
-        <Box
-          sx={{
-            background: "#f0f2f5",
-            borderRadius: "2rem",
-            padding: "0.25rem 0.75rem",
-            height: "2.5rem",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <SearchIcon sx={{ opacity: "0.5" }} />
-          <input
-            className="no-underline bg-transparent border-none outline-none ml-1"
+        <Box sx={{ width: "350px" }}>
+          <FbSearchBox
+            onSearch={handleSearch}
             placeholder="Searching on facebook"
-          ></input>
+          />
         </Box>
       </Box>
       <Box
@@ -114,6 +113,7 @@ export const Header = () => {
           alignItems: "center",
           justifyContent: "center",
           flex: "3",
+          width: "60%",
         }}
       >
         <IconButton
@@ -149,6 +149,7 @@ export const Header = () => {
           justifyContent: "flex-end",
           flex: "1",
           gap: "0.25rem",
+          maxWidth: "20%",
         }}
       >
         <IconButton>

@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { TextField, InputAdornment } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 
 interface SearchComponentProps {
   placeholder?: string;
   disabled?: boolean;
-  onSearch: (value: string) => void;
+  onHandleText: (value: string) => void;
 }
 
-const FbSearchBox: React.FC<SearchComponentProps> = ({
-  placeholder = "Search",
+const FbInput: React.FC<SearchComponentProps> = ({
+  placeholder,
   disabled = false,
-  onSearch,
+  onHandleText: onText,
 }) => {
   const [searchValue, setSearchValue] = useState("");
 
@@ -20,8 +19,8 @@ const FbSearchBox: React.FC<SearchComponentProps> = ({
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && onSearch) {
-      onSearch(searchValue);
+    if (e.key === "Enter" && onText) {
+      onText(searchValue);
     }
   };
 
@@ -33,13 +32,6 @@ const FbSearchBox: React.FC<SearchComponentProps> = ({
       onChange={handleChange}
       onKeyPress={handleKeyPress}
       disabled={disabled}
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position="start">
-            <SearchIcon sx={{ color: "action.disabled" }} />
-          </InputAdornment>
-        ),
-      }}
       sx={{
         "& .MuiOutlinedInput-root": {
           borderRadius: "20px",
@@ -55,11 +47,12 @@ const FbSearchBox: React.FC<SearchComponentProps> = ({
           },
         },
         "& .MuiInputBase-input": {
-          padding: "0.5rem",
+          padding: "0.5rem 1rem",
         },
+        width: "100%"
       }}
     />
   );
 };
 
-export default FbSearchBox;
+export default FbInput;

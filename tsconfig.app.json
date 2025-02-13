@@ -22,5 +22,5 @@
 
     "rootDir": "./src"
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "src/features/dashboard/right-sidebar/RightSidebar.tsx"]
 }
