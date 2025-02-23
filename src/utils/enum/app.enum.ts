@@ -1,12 +1,12 @@
 export enum Sort {
-  ASC = 0,
-  DESC = 1,
-  NO = 2,
+  ASC = 1,
+  DESC = 2,
+  NO = 3,
 }
 
 export enum Gender {
-  Male = 0,
-  Female = 1,
-  Other = 2,
+  Male = 1,
+  Female = 2,
+  Other = 3,
 }
 
