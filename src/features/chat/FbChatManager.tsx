@@ -1,77 +1,30 @@
 import React, { useEffect, useState } from "react";
 import FbChatBox from "./FbChatBox";
 import FbChatBubble from "./FbChatBubble";
-import { IBaseUser, IFriendOfUser, IUser } from "../../models/users/user.model";
-import { IPagingResponse } from "../../models/base/PagingResponse.model";
-import { getFriends } from "../../services/api/user.api";
+import { IBaseUser } from "../../models/users/user.model";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/auth/authSlice";
-import { IPagingRequest } from "../../models/base/PagingRequest.model";
+import { closeChatGlobal, selectChats } from "../../store/slices/chatSlice";
+import { useDispatch } from "react-redux";
 
 export const FbChatManager: React.FC = () => {
   const user = useSelector(selectUser);
+  const chats = useSelector(selectChats);
+  const dispatch = useDispatch();
   const [openChats, setOpenChats] = useState<IBaseUser[]>([]);
   const [minimizedChats, setMinimizedChats] = useState<IBaseUser[]>([]);
-  const [friends, setFriends] = useState<IPagingResponse<IFriendOfUser>>();
 
   useEffect(() => {
-    (async () => {
-      await fetchFriends();
-    })();
-  }, []);
-
-  const fetchFriends = async () => {
-    const body: IPagingRequest = {
-      pageNumber: 1,
-      pageSize: 5,
-    };
-    if (!user) return;
-
-    await getFriends(user?.id, body).then((res) => {
-      const data: IFriendOfUser[] = res.data.map((e) => {
-        return {
-          id: e.id,
-          profilePicture: e.profilePicture,
-          name: e.name,
-          relationship: e.relationship,
-          mutualFriends: Math.floor(Math.random() * 100),
-        };
-      });
-      setOpenChats([
-        {
-          id: data[0].id,
-          name: data[0].name,
-          profilePicture: data[0].profilePicture,
-        },
-        {
-          id: data[1].id,
-          name: data[1].name,
-          profilePicture: data[1].profilePicture,
-        },
-      ]);
-      setMinimizedChats([
-        {
-          id: data[2].id,
-          name: data[2].name,
-          profilePicture: data[2].profilePicture,
-        },
-        {
-          id: data[3].id,
-          name: data[3].name,
-          profilePicture: data[3].profilePicture,
-        },
-      ]);
-
-      setFriends((prev) => ({
-        ...prev,
-        data,
-        total: res.total,
-        totalPage: res.totalPage,
-        page: res.page,
-        pageSize: res.pageSize,
-      }));
+    chats.map((e) => {
+      return {
+        id: e.id,
+        name: e.name,
+        profilePicture: e.members.filter((m) => m.id !== user?.id).at(0)
+          ?.profilePicture,
+      };
     });
-  };
+    setOpenChats(chats);
+  }, [chats]);
 
   const openChat = (id: string, name: string) => {
     if (openChats.length < 3) {
@@ -83,6 +36,7 @@ export const FbChatManager: React.FC = () => {
 
   const closeChat = (id: string) => {
     setOpenChats(openChats.filter((chat) => chat.id !== id));
+    dispatch(closeChatGlobal(id));
   };
 
   const minimizeChat = (id: string) => {

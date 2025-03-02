@@ -1,28 +1,25 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppState } from "..";
+import { IChat } from "../../models/chat/chat.model";
 
-interface IChat {
-    id: string,
-    toUserId: string,
-    updatedAt: Date
-}
-
-
-const initialState: IChat[] =  []
+const initialState: IChat[] = [];
 
 const chatSlice = createSlice({
-    name: "chat",
-    initialState,
-    reducers: {
-        openChat: (state, action: PayloadAction<IChat>) => {
-            state.push(action.payload)
-        },
-        close: (state, action: PayloadAction<IChat>) => {
-            state.filter(c => c.id != action.payload.id)
-        },
-    }
-})
+  name: "chat",
+  initialState,
+  reducers: {
+    openChatGlobal: (state, action: PayloadAction<IChat>) => {
+      state.push(action.payload);
+    },
+    closeChatGlobal: (state, action: PayloadAction<string>) => {
+      return state.filter((c) => c.id !== action.payload);
+    },
+    clearChatGlobal: () => {
+      return []
+    },
+  },
+});
 
-export const selectChats = (state: AppState) => state
-export const { openChat } = chatSlice.actions
+export const selectChats = (state: AppState) => state.chat;
+export const { openChatGlobal, closeChatGlobal, clearChatGlobal } = chatSlice.actions;
 export default chatSlice.reducer;

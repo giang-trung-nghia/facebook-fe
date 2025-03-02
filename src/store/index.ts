@@ -4,10 +4,12 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import { authReducerSlice } from "./slices/auth/authSlice";
 import loadingReducer from "./slices/loadingSlice";
+import chatReducer from "./slices/chatSlice";
 
 const rootReducer = combineReducers({
   auth: authReducerSlice,
   loading: loadingReducer,
+  chat: chatReducer
 });
 
 const persistConfig = {

@@ -1,11 +1,11 @@
 export enum ERelationshipType {
-  Follow,
-  Friend,
+  Follow = 1,
+  Friend = 2,
 }
 
 export enum ERelationshipStatus {
-  Pending,
-  Accepted,
-  Denied,
-  Blocked,
+  Pending = 1,
+  Accepted = 2,
+  Denied = 3,
+  Blocked = 4,
 }

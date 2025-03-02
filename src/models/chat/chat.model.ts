@@ -2,6 +2,7 @@ import { IBaseUser } from "../users/user.model";
 
 export interface IChat {
   id: string; // conservation id
+  name: string;
   members: IChatMember[];
   lastMessageTime: Date;
 }

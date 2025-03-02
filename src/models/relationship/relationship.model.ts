@@ -15,5 +15,5 @@ export interface ICreateRelationship {
   fromUserId: string;
   toUserId: string;
   relationshipType: ERelationshipType;
-  relationshipStatus: ERelationshipStatus;
+  status: ERelationshipStatus;
 }

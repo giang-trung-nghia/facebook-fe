@@ -6,7 +6,7 @@ export const getChat = async (id: string): Promise<IChat> => {
 };
 
 export const getChatByRelationshipId = async (id: string): Promise<IChat> => {
-  return await getApi(`/conservation/relationship/${id}`);
+  return await getApi(`/conservation/relationship/${id}`, true);
 };
 
 export const createChatByRelationshipId = async (id: string): Promise<IChat> => {

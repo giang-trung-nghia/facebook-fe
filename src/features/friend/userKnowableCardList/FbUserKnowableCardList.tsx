@@ -59,7 +59,7 @@ const FbUserKnowableCardList: React.FC<FbFriendCardListProps> = ({ onAddFriend }
     const body: ICreateRelationship = {
       fromUserId: user?.id,
       toUserId: id,
-      relationshipStatus: ERelationshipStatus.Pending,
+      status: ERelationshipStatus.Pending,
       relationshipType: ERelationshipType.Friend,
     };
     await createRelationship(body).then((res) => {

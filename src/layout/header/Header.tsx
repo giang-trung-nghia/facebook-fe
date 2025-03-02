@@ -32,11 +32,14 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/auth/authSlice";
 import { DashboardRoute } from "../../routes";
 import FbSearchBox from "../../components/commons/FbSearchBox";
+import { useDispatch } from "react-redux";
+import { clearChatGlobal } from "../../store/slices/chatSlice";
 
 export const Header = () => {
   const navigate = useNavigate();
   const user = useSelector(selectUser);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const dispatch = useDispatch()
 
   const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -49,6 +52,7 @@ export const Header = () => {
   const handleLogout = async () => {
     const refreshToken = localStorage.getItem("refreshToken");
     logOut(refreshToken ?? "");
+    dispatch(clearChatGlobal())
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("accessToken");
     navigate(SignInRoute.path);

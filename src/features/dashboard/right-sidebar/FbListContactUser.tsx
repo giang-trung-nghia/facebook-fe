@@ -27,15 +27,16 @@ export const ListContactUser = () => {
     if (!user) return;
 
     await getFriends(user?.id, body).then((res) => {
-      const data: IFriendOfUser[] = res.data.map((e) => {
-        return {
-          id: e.id,
-          profilePicture: e.profilePicture,
-          name: e.name,
-          relationship: e.relationship,
-          mutualFriends: Math.floor(Math.random() * 100),
-        };
-      });
+      const data: IFriendOfUser[] = res.data
+      // .map((e) => {
+      //   return {
+      //     id: e.id,
+      //     profilePicture: e.profilePicture,
+      //     name: e.name,
+      //     relationship: e.relationship,
+      //     mutualFriends: e.mutualFriends
+      //   };
+      // });
       setFriends(data);
     });
   };
@@ -54,7 +55,7 @@ export const ListContactUser = () => {
         </div>
       </div>
       {friends.map((friend) => (
-        <FbItemContactUser key={friend.id} user={friend} />
+        <FbItemContactUser key={friend.id} friend={friend} />
       ))}
     </div>
   );

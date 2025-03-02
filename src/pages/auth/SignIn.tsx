@@ -19,7 +19,7 @@ import { useDispatch } from "react-redux";
 import { setAuth } from "../../store/slices/auth/authSlice";
 import { jwtDecode } from "jwt-decode";
 import { AuthState } from "../../store/slices/auth/types";
-import { IJwtPayload } from "../../models/auth/jwtPayload.mode";
+import { IJwtPayload } from "../../models/auth/jwtPayload.model";
 import { toast } from "react-toastify";
 
 const SignIn: React.FC = () => {
